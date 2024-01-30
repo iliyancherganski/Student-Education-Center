@@ -16,10 +16,6 @@ namespace StudentEducationCenter.Data.Models
         public int AgeGroupId { get; set; }
         public AgeGroup AgeGroup { get; set; } = null!;
 
-        [ForeignKey(nameof(Teacher))]
-        public int TeacherId { get; set; }
-        public Teacher Teacher { get; set; } = null!;
-
         [Required]
         public DateTime StartDate { get; set; }
 
@@ -34,5 +30,7 @@ namespace StudentEducationCenter.Data.Models
         public Employee Employee { get; set; } = null!;
 
         public List<ChildCourse> ChildrenCourse { get; set; } = new List<ChildCourse>();
+        public List<TeacherCourse> TeachersCourse { get; set; } = new List<TeacherCourse>();
+        public List<CourseRequest> CourseRequests { get; set; } = new List<CourseRequest>();
     }
 }

@@ -10,5 +10,7 @@ namespace StudentEducationCenter.Data.Models
         [Required]
         [StringLength(50)]
         public string SpecialtyName { get; set; } = null!;
+
+        public List<TeacherSpecialty> TeachersSpecialty { get; set; } = new List<TeacherSpecialty>();
     }
 }

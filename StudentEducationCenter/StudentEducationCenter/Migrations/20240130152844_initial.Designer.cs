@@ -12,7 +12,7 @@ using StudentEducationCenter.Data;
 namespace StudentEducationCenter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240129155037_initial")]
+    [Migration("20240130152844_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace StudentEducationCenter.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -178,6 +178,28 @@ namespace StudentEducationCenter.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AgeGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AgeGroupName = "5 клас"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AgeGroupName = "6 клас"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AgeGroupName = "7 клас"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AgeGroupName = "5-7 клас"
+                        });
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Child", b =>
@@ -243,6 +265,38 @@ namespace StudentEducationCenter.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CityName = "Бургас"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CityName = "Варна"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CityName = "Велико Търново"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CityName = "Пловдив"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CityName = "Русе"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CityName = "София"
+                        });
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Course", b =>
@@ -273,16 +327,11 @@ namespace StudentEducationCenter.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AgeGroupId");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Courses");
                 });
@@ -431,6 +480,13 @@ namespace StudentEducationCenter.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PositionName = "Системен администратор"
+                        });
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Specialty", b =>
@@ -449,6 +505,48 @@ namespace StudentEducationCenter.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Specialties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            SpecialtyName = "Математика"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            SpecialtyName = "Информатика"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            SpecialtyName = "Български език и литература"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            SpecialtyName = "Английски език"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            SpecialtyName = "Немски език"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            SpecialtyName = "Испански език"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            SpecialtyName = "Руски език"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            SpecialtyName = "Френски език"
+                        });
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Teacher", b =>
@@ -487,9 +585,6 @@ namespace StudentEducationCenter.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("SpecialtyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -498,11 +593,39 @@ namespace StudentEducationCenter.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("SpecialtyId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("StudentEducationCenter.Data.Models.TeacherCourse", b =>
+                {
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeacherId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("TeachersCourses");
+                });
+
+            modelBuilder.Entity("StudentEducationCenter.Data.Models.TeacherSpecialty", b =>
+                {
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecialtyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeacherId", "SpecialtyId");
+
+                    b.HasIndex("SpecialtyId");
+
+                    b.ToTable("TeachersSpecialties");
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.User", b =>
@@ -675,17 +798,9 @@ namespace StudentEducationCenter.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentEducationCenter.Data.Models.Teacher", "Teacher")
-                        .WithMany("Courses")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("AgeGroup");
 
                     b.Navigation("Employee");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.CourseRequest", b =>
@@ -697,7 +812,7 @@ namespace StudentEducationCenter.Migrations
                         .IsRequired();
 
                     b.HasOne("StudentEducationCenter.Data.Models.Course", "Course")
-                        .WithMany()
+                        .WithMany("CourseRequests")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -761,12 +876,6 @@ namespace StudentEducationCenter.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StudentEducationCenter.Data.Models.Specialty", "Specialty")
-                        .WithMany()
-                        .HasForeignKey("SpecialtyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("StudentEducationCenter.Data.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -775,9 +884,45 @@ namespace StudentEducationCenter.Migrations
 
                     b.Navigation("City");
 
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StudentEducationCenter.Data.Models.TeacherCourse", b =>
+                {
+                    b.HasOne("StudentEducationCenter.Data.Models.Course", "Course")
+                        .WithMany("TeachersCourse")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("StudentEducationCenter.Data.Models.Teacher", "Teacher")
+                        .WithMany("TeacherCourses")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("StudentEducationCenter.Data.Models.TeacherSpecialty", b =>
+                {
+                    b.HasOne("StudentEducationCenter.Data.Models.Specialty", "Specialty")
+                        .WithMany("TeachersSpecialty")
+                        .HasForeignKey("SpecialtyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StudentEducationCenter.Data.Models.Teacher", "Teacher")
+                        .WithMany("TeacherSpecialties")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Specialty");
 
-                    b.Navigation("User");
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Child", b =>
@@ -790,6 +935,10 @@ namespace StudentEducationCenter.Migrations
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Course", b =>
                 {
                     b.Navigation("ChildrenCourse");
+
+                    b.Navigation("CourseRequests");
+
+                    b.Navigation("TeachersCourse");
                 });
 
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Employee", b =>
@@ -802,9 +951,16 @@ namespace StudentEducationCenter.Migrations
                     b.Navigation("Children");
                 });
 
+            modelBuilder.Entity("StudentEducationCenter.Data.Models.Specialty", b =>
+                {
+                    b.Navigation("TeachersSpecialty");
+                });
+
             modelBuilder.Entity("StudentEducationCenter.Data.Models.Teacher", b =>
                 {
-                    b.Navigation("Courses");
+                    b.Navigation("TeacherCourses");
+
+                    b.Navigation("TeacherSpecialties");
                 });
 #pragma warning restore 612, 618
         }

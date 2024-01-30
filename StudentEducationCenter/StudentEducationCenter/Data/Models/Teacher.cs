@@ -32,14 +32,11 @@ namespace StudentEducationCenter.Data.Models
         [MaxLength(50)]
         public string Email { get; set; } = null!;
 
-        [ForeignKey(nameof(Specialty))]
-        public int SpecialtyId { get; set; }
-        public Specialty Specialty { get; set; } = null!;
-
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } = null!;
         public User User { get; set; } = null!;
 
-        public List<Course> Courses { get; set; } = new List<Course>();
+        public List<TeacherCourse> TeacherCourses { get; set; } = new List<TeacherCourse>();
+        public List<TeacherSpecialty> TeacherSpecialties { get; set; } = new List<TeacherSpecialty>();
     }
 }
