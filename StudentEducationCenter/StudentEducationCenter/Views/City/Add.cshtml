@@ -1,0 +1,13 @@
+﻿@using StudentEducationCenter.ViewModels.Additional;
+@model CityViewModel
+
+<h2>Добавяне на град</h2>
+
+<form method="post" asp-action="Add">
+    <div class="form-group">
+        <label asp-for="CityName">Град</label>
+        <input asp-for="CityName" class="form-control" />
+        <span asp-validation-for="CityName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Добави град</button>
+</form>

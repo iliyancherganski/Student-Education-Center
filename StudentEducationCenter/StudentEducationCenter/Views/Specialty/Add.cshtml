@@ -1,0 +1,12 @@
+﻿@using StudentEducationCenter.ViewModels.Additional;
+@model SpecialtyViewModel
+<h2>Добавяне на специализация</h2>
+
+<form method="post" asp-action="Add">
+    <div class="form-group">
+        <label asp-for="SpecialtyName">Специализация</label>
+        <input asp-for="SpecialtyName" class="form-control" />
+        <span asp-validation-for="SpecialtyName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Добави специализация</button>
+</form>

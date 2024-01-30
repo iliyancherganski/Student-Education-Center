@@ -1,0 +1,12 @@
+﻿@using StudentEducationCenter.ViewModels.Additional;
+@model PositionViewModel
+<h2>Добавяне на длъжност</h2>
+
+<form method="post" asp-action="Add">
+    <div class="form-group">
+        <label asp-for="PositionName">Длъжнсот</label>
+        <input asp-for="PositionName" class="form-control" />
+        <span asp-validation-for="PositionName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Добави длъжност</button>
+</form>
